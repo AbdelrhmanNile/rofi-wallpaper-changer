@@ -1,0 +1,74 @@
+#!/bin/bash
+
+#AUTHOR: ABDELRHMAN NILE (PIRATE)
+#github: https://github.com/AbdelrhmanNile
+
+# this script WILL NOT WORK if you don't have feh and rofi, please install them first
+
+dir="/home/$USER/Pictures/wall" # wallpapers folder, change it to yours
+cd $dir
+wallpaper="none is selected" 
+set="feh --bg-fill"
+view="feh"
+startup_config_file="/home/$USER/.config/bspwm/bspwmrc" #change this to whatever config file that sets your wallpaper on startup, this file will get modified if you choose tp set a wallpaper permanantly 
+
+########################-FUNCTION FOR SELECTING A WALLPAPER-###################
+selectpic(){
+    wallpaper=$(ls $dir | rofi -dmenu -p "select a wallpaper: ($wallpaper)")
+
+    if [[ $wallpaper == "q" || $wallpaper == "" ]]; then
+        killall feh && exit 
+    else
+        action
+    fi
+}
+###############################################################################
+
+#########################-FUNCTION FOR TAKING AN ACTION ON THE SELECTED WALLPAPER-#########################
+action(){
+  whattodo=$(echo -e "view\nset\nset (permanant)" | rofi -dmenu -p "whatcha wanna do with it? ($wallpaper)")
+    if [[ $whattodo == "set" ]]; then
+        set_wall
+    elif [[ $whattodo == "set (permanant)" ]]; then
+      set_permanant
+    else
+        view_wall
+    fi
+}
+#############################################################################################################
+
+########-FUNCTION TO SET THE SELECTED WALLPAPER, BUT IT IS NOT PERMANANT, THE CHANGE WILL BE UNDONE AFTER LOGOUT OR REBOOT-#######
+set_wall(){
+    $set $wallpaper && killall feh &
+}
+###################################################################################################################################
+
+####################-FUNCTION TO VIEW THE WALLPAPER-######################
+view_wall(){
+    $view $wallpaper &
+    set_after_view
+}
+###########################################################################
+
+##############-FUNCTION TO PROMPT THE USER AFTER VIEWING THE WALLPAPER-#######################
+set_after_view(){
+  setorno=$(echo -e "set (permanant)\ngo back" | rofi -dmenu -p "wanna set it? ($wallpaper)")
+
+  if [[ $setorno == "set (permanant)" ]]; then
+      set_permanant
+    else
+      killall feh && wch
+    fi
+}
+################################################################################################
+
+#########-FUNCTION TO SET THE WALLPAPER permanantly, IT WILL MODIFY YOUR START UP CONFIG FILE-###########
+set_permanant(){
+  set_wall
+  sed -i '/feh/d' $startup_config_file
+  echo "$set $wallpaper &" >> $startup_config_file
+}
+#########################################################################################################
+
+###################-MAIN-####################
+selectpic 
