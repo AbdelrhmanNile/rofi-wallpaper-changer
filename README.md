@@ -1,5 +1,6 @@
 ## INFO
-just a rofi script to set wallpapers using feh
+a shell script for rofi to set wallpaper using feh. <br />
+i code silly shell scripts utilizing rofi/dmenu for fun. 
 ## DEPENDENCIES
 - rofi
 - feh
@@ -10,4 +11,12 @@ before you install the script, edit it with the correct path for your wallpapers
 git clone https://github.com/AbdelrhmanNile/rofi-wallpaper-changer.git
 cd rofi-wallpaper-changer
 sudo make install
+```
+## USAGE
+the package is called ``` wch ``` assgin a keybinding for it
+
+## UNINSTALL
+```
+cd rofi-wallpaper-changer
+sudo make uninstall
 ```
