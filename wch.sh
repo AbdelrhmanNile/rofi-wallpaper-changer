@@ -4,7 +4,7 @@
 #github: https://github.com/AbdelrhmanNile
 
 # this script WILL NOT WORK if you don't have feh and rofi, please install them first
-
+#
 dir="/home/$USER/Pictures/wall/" # wallpapers folder, change it to yours, make sure that it ends with a /
 cd $dir
 wallpaper="none is selected" 
@@ -71,4 +71,5 @@ set_permanant(){
 #########################################################################################################
 
 ###################-MAIN-####################
-selectpic 
+selectpic
+
